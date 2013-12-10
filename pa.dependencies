@@ -1,0 +1,8 @@
+[
+    {
+        "remote":       "blobs",
+        "repository":   "proprietary_vendor_samsung_manta",
+        "target_path":  "vendor/samsung/manta",
+        "revision":     "kitkat"
+    }
+]
