@@ -1,8 +1,15 @@
 [
     {
-        "remote":       "blobs",
-        "repository":   "proprietary_vendor_samsung_manta",
-        "target_path":  "vendor/samsung/manta",
-        "revision":     "kitkat"
+        "remote":      "github",
+        "account":     "TheMuppets",
+        "repository":  "proprietary_vendor_samsung",
+        "target_path": "vendor/samsung",
+        "revision":    "cm-11.0"
+    },
+    {
+        "remote":       "aosp",
+        "repository":   "platform/hardware/samsung_slsi/exynos5",
+        "target_path":  "hardware/samsung_slsi/exynos5",
+        "revision":     "refs/tags/android-4.4.2_r1"
     }
 ]
