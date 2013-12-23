@@ -4,5 +4,11 @@
         "repository":   "proprietary_vendor_samsung_manta",
         "target_path":  "vendor/samsung/manta",
         "revision":     "kitkat"
+    },
+    {
+        "remote":       "aosp",
+        "repository":   "platform/hardware/samsung_slsi/exynos5",
+        "target_path":  "hardware/samsung_slsi/exynos5",
+        "revision":     "refs/tags/android-4.4.2_r1"
     }
 ]
