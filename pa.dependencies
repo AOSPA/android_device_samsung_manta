@@ -9,6 +9,6 @@
         "remote":       "aosp",
         "repository":   "platform/hardware/samsung_slsi/exynos5",
         "target_path":  "hardware/samsung_slsi/exynos5",
-        "revision":     "refs/tags/android-4.4.2_r1"
+        "revision":     "refs/tags/android-4.4.3_r1.1"
     }
 ]
