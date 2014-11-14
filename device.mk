@@ -53,6 +53,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     device/samsung/manta/media_codecs.xml:system/etc/media_codecs.xml \
     device/samsung/manta/media_profiles.xml:system/etc/media_profiles.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -65,7 +68,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml
+    frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
+    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml
 
 PRODUCT_COPY_FILES += \
     device/samsung/manta/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
@@ -78,6 +82,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/manta/audio_policy.conf:system/etc/audio_policy.conf
 
+PRODUCT_PACKAGES := \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+
 # audio effects
 PRODUCT_PACKAGES += libaudience_voicefx
 PRODUCT_COPY_FILES += \
@@ -88,26 +99,16 @@ PRODUCT_COPY_FILES += \
     device/samsung/manta/gps/gps.conf:system/etc/gps.conf \
     device/samsung/manta/gps/gpsd:system/vendor/bin/gpsd \
     device/samsung/manta/gps/gps.xml:system/vendor/etc/gps.xml \
-    device/samsung/manta/gps/gps.exynos5.so:system/lib/hw/gps.exynos5.so
+    device/samsung/manta/gps/gps.manta.so:system/lib/hw/gps.manta.so
 
 # NFC packages
 PRODUCT_PACKAGES += \
-    nfc_nci.manta \
+    nfc_nci.bcm2079x.default \
     NfcNci \
-    Tag \
-    com.android.nfc_extras
-
-# NFCEE access control
-ifeq ($(TARGET_BUILD_VARIANT),user)
-    NFCEE_ACCESS_PATH := device/samsung/manta/nfc/nfcee_access.xml
-else
-    NFCEE_ACCESS_PATH := device/samsung/manta/nfc/nfcee_access_debug.xml
-endif
+    Tag
 
 # NFC access control + feature files + configuration
 PRODUCT_COPY_FILES += \
-    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml \
-    frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
     device/samsung/manta/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
@@ -156,7 +157,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
-    ro.opengles.version=196608 \
+    ro.opengles.version=196609 \
     ro.sf.lcd_density=320 \
     ro.hwui.texture_cache_size=72 \
     ro.hwui.layer_cache_size=48 \
@@ -169,7 +170,8 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.hwui.text_small_cache_height=1024 \
     ro.hwui.text_large_cache_width=2048 \
     ro.hwui.text_large_cache_height=1024 \
-    ro.hwui.disable_scissor_opt=true
+    ro.hwui.disable_scissor_opt=true \
+    af.fast_track_multiplier=1
 
 # setup dalvik vm configs.
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
@@ -182,9 +184,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
+# Allows healthd to boot directly from charger mode rather than initiating a reboot.
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.enable_boot_charger_mode=1
+
 # for off charging mode
 PRODUCT_PACKAGES += \
-    charger \
     charger_res_images
 
 $(call inherit-product-if-exists, hardware/samsung_slsi/exynos5/exynos5.mk)
