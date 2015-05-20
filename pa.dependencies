@@ -3,7 +3,7 @@
         "remote":       "blobs",
         "repository":   "proprietary_vendor_samsung_manta",
         "target_path":  "vendor/samsung/manta",
-        "revision":     "lollipop"
+        "revision":     "lollipop-mr1"
     },
     {
         "remote":       "aosp",
